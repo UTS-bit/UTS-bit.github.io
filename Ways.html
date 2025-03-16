@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>طرق الشحن - UpTime</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #7F5AF0;
+      --secondary: #2CB67D;
+      --light: #FFFFFE;
+      --dark: #16161A;
+      --accent: #FF8E3C;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--dark);
+      color: var(--light);
+      overflow-x: hidden;
+      direction: ltr; /* Add direction for Arabic text */
+    }
+
+    .hero {
+      min-height: 50vh; /* Reduced hero height for inner pages */
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 5rem; /* Adjust padding to account for fixed navbar */
+      padding-bottom: 3rem;
+    }
+
+    .hero-content {
+      z-index: 2;
+      position: relative;
+    }
+
+    .hero-title {
+      font-weight: 800;
+      font-size: 3rem; /* Adjusted title size for inner page */
+      line-height: 1.2;
+      margin-bottom: 1rem; /* Reduced margin */
+    }
+
+    .hero-subtitle {
+      font-weight: 400;
+      font-size: 1.1rem; /* Adjusted subtitle size */
+      margin-bottom: 1.5rem; /* Reduced margin */
+      opacity: 0.8;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      border-radius: 50px;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      border-color: var(--secondary);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(44, 182, 125, 0.2);
+    }
+
+    .btn-outline {
+      color: var(--light);
+      border: 2px solid var(--light);
+      border-radius: 50px;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-left: 1rem;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--light);
+      color: var(--dark);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 255, 254, 0.2);
+    }
+
+    .feature-card {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      height: 100%;
+      backdrop-filter: blur(10px);
+      text-align: center; /* Center align feature card content */
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .feature-text {
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+
+    .shape {
+      position: absolute;
+      z-index: 1;
+    }
+
+    .shape-1 {
+      top: 10%;
+      left: 10%;
+      width: 200px; /* Reduced shape size for inner pages */
+      height: 200px; /* Reduced shape size for inner pages */
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      filter: blur(60px); /* Reduced blur for inner pages */
+      opacity: 0.4;
+    }
+
+    .shape-2 {
+      bottom: 10%;
+      right: 10%;
+      width: 150px; /* Reduced shape size for inner pages */
+      height: 150px; /* Reduced shape size for inner pages */
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--accent), var(--primary));
+      filter: blur(40px); /* Reduced blur for inner pages */
+      opacity: 0.3;
+    }
+
+    .navbar {
+      background-color: rgba(22, 22, 26, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+
+    .nav-link {
+      color: #fff;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      margin-left: 1rem;
+      font-weight: 500;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      opacity: 1;
+    }
+
+    .testimonial-card {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--secondary);
+    }
+
+    .testimonial-role {
+      font-size: 0.875rem;
+      opacity: 0.7;
+    }
+
+    .footer {
+      background-color: rgba(22, 22, 26, 0.9);
+      padding: 4rem 0;
+      margin-top: 5rem;
+    }
+
+    .footer-title {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-link {
+      color: var(--light);
+      opacity: 0.7;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+      opacity: 1;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .social-icon:hover {
+      background-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2rem; /* Further reduced title size for mobile inner page */
+      }
+
+      .hero-subtitle {
+        font-size: 0.9rem; /* Further reduced subtitle size for mobile inner page */
+      }
+
+      .btn-outline {
+        margin-left: 0;
+        margin-top: 1rem;
+      }
+    }
+
+    /* New feature text styles */
+    .text-feature-row {
+        margin-top: 2rem;
+    }
+
+    .text-feature-item {
+        display: flex;
+        justify-content: space-around; /* Distribute space evenly */
+        margin-bottom: 1rem; /* Space between rows */
+        flex-wrap: wrap; /* Allow features to wrap on smaller screens */
+    }
+
+    .text-feature {
+    font-size: 1.4rem;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 50px;
+        padding: 0.75rem 1.5rem; /* Adjust padding */
+        backdrop-filter: blur(10px);
+        text-align: center;
+        flex-basis: calc(50% - 1rem); /* Adjust width of each feature with spacing */
+        margin: 0.5rem; /* Spacing around features in a pair */
+        box-sizing: border-box; /* Include padding and border in element's total width and height */
+    }
+
+    .text-feature:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Fix for Navbar collapse issue on mobile */
+    @media (max-width: 991.98px) { /* Bootstrap's breakpoint for navbar collapse */
+      .navbar-collapse {
+        width: 100%; /* Ensure collapse takes full width */
+        overflow-x: hidden; /* Prevent horizontal overflow within collapse */
+      }
+      .navbar-nav {
+        width: 100%; /* Ensure nav takes full width inside collapse */
+      }
+      .nav-item {
+        width: 100%; /* Each nav item takes full width in collapsed state */
+        text-align: center; /* Center align nav links in collapsed state if needed */
+      }
+      .nav-link {
+        display: block; /* Make nav links block elements to take full width */
+        padding: 0.75rem 1rem; /* Adjust padding for better touch area */
+        margin-left: 0; /* Reset left margin */
+      }
+    }
+
+    .navbar-toggler-icon {
+      filter: invert(1);
+    }
+
+    /* Custom Dropdown Styles */
+    .dropdown-menu {
+      background-color: rgba(22, 22, 26, 0.12); /* Match Navbar Background */
+      backdrop-filter: blur(30px); /* Apply Blur */
+      border: none; /* Remove Border */
+      border-radius: 20px; /* Rounded Corners */
+      padding: 0.5rem 0; /* Adjust Padding */
+      margin-top: 0.25rem; /* Slightly adjust spacing from toggle */
+
+      opacity: 0; /* Initially Hidden for Animation */
+      transform: translateY(-10px); /* Start slightly above for animation */
+      transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth Transition */
+    }
+
+    .dropdown-menu.show {
+      opacity: 1; /* Fade in when shown */
+      transform: translateY(0); /* Slide down to position */
+    }
+
+    .dropdown-item {
+      color: var(--light); /* Light Text Color */
+      padding: 0.75rem 1.5rem; /* Item Padding */
+      font-weight: 500; /* Match Nav Link Font Weight */
+    }
+
+    .dropdown-item:hover, .dropdown-item:focus {
+      background-color: rgba(0, 0, 0, 0); /* Subtle Hover Background */
+      color: var(--primary); /* Primary Hover Text Color */
+    }
+
+    /* Remove default Bootstrap dropdown arrow */
+    .dropdown-toggle::after {
+      display: none;
+    }
+
+     /* Shipping Methods Section Styles */
+    .shipping-methods {
+        padding: 4rem 0;
+    }
+
+    .shipping-method-card {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: right; /* Align text to right for Arabic */
+    }
+
+    .shipping-method-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .shipping-method-icon {
+        font-size: 2rem;
+        color: var(--accent);
+        margin-bottom: 1rem;
+        display: inline-block; /* Allows margin-left to work */
+        margin-left: 1rem; /* Space between icon and title */
+        vertical-align: middle; /* Align icon with title vertically */
+    }
+
+    .shipping-method-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: inline-block; /* To be on the same line as icon */
+        vertical-align: middle; /* Align title with icon vertically */
+    }
+
+    .shipping-method-description {
+        opacity: 0.8;
+        line-height: 1.7;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.5/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js">  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+  <script type="text/babel">
+    // Register GSAP plugins
+    gsap.registerPlugin(ScrollTrigger);
+
+    // App Component
+    const App = () => {
+      React.useEffect(() => {
+        // Hero animations (if needed for inner pages, can adjust or remove)
+        gsap.from('.hero-title', { y: 50, opacity: 0, duration: 0.8 });
+        gsap.from('.hero-subtitle', { y: 50, opacity: 0, duration: 0.8, delay: 0.3 });
+
+         // Footer animation (if needed for inner pages, can adjust or remove)
+        gsap.from('.footer-col', {
+          scrollTrigger: {
+            trigger: '.footer',
+            start: 'top 90%',
+          },
+          y: 50,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.2
+        });
+
+      }, []);
+
+      return (
+        <React.Fragment>
+          <nav className="navbar navbar-expand-lg fixed-top">
+            <div className="container">
+              <a className="navbar-brand" href="index.html">UpTime</a>
+              <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav ms-auto">
+                  <li className="nav-item">
+                    <a className="nav-link" href="faq.html">الاسئلة الشائعة</a>
+                  </li>
+                  <li className="nav-item dropdown">
+                    <a className="nav-link dropdown-toggle" href="#" id="otherDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 192 192"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="14" d="m30 103 66 66 66-66m-66 52V23"/></svg>   اخرى
+                    </a>
+                    <ul className="dropdown-menu" aria-labelledby="otherDropdown">
+                      <li><a className="dropdown-item" href="#">حساب سعر الشحن</a></li>
+                      <li><a className="dropdown-item" href="#">الشروط والتفاصيل</a></li>
+                      <li><a className="dropdown-item" href="#">طلب جديد</a></li>
+                      <li><a className="dropdown-item" href="#">تتبع الشحنة</a></li>
+                    </ul>
+                  </li>
+                  <li className="nav-item">
+                        <a className="nav-link active" aria-current="page" href="ways.html">طرق الشحن</a>
+                    <a className="nav-link" href="#contact">اتصل بنا</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+
+
+          <section id="shipping-methods" className="shipping-methods py-5 mt-5">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-4">
+                  <div className="shipping-method-card">
+                    <i className="shipping-method-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 4h14l3 3v13a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7l3-3z"></path><path d="M9 9v9"></path><path d="M15 9v5"></path></svg>
+                    </i>
+                    <h3 className="shipping-method-title"> عنوان شحن </h3>
+                    <p className="shipping-method-description">
+                      عنوان مستودع لاستلام الشحنات وشحنها للعراق ودفع سعر الشحن عند استلام المنتج
+                    </p>
+                    <p>🇸🇦 🇹🇷 🇬🇧 🇦🇹 🇯🇵 🇺🇸 :البلدان المتوفرة</p>
+                    <p> الطريقة: يرجى التواصل معنى مباشرة</p>
+                  </div>
+                </div>
+                <div className="col-lg-4">
+                  <div className="shipping-method-card">
+                    <i className="shipping-method-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6l2 3h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-2 3H2v-5z"></path><path d="M16 17V5a2 2 0 0 0-2-2H3l11 14z"></path><path d="M17 17L22 12"></path><path d="M22 17V12H17"></path></svg>
+                    </i>
+                    <h3 className="shipping-method-title">شحن مضمون</h3>
+                    <p className="shipping-method-description">
+                      في حال الموقع او المتجر لم يدعم المستودع او تشوف الطريقة معقدة فهذه الطريقة مصممة خصيصا الك حيث يتم دفع مبلغ المنتج + الشحن مقدماً والباقي علينا
+                    </p>
+                    <p>البلدان المتوفرة: جميع البلدان والمتاجر والمواقع</p>
+                   <p>الطريقة: تقديم على طلب من خلال الموقع او مراسلتنا مباشرة</p>
+                  </div>
+                
+                               
+                </div>                    
+              </div>                    
+            </div>                    
+          </section>
+
+
+          
+
+
+        </React.Fragment>
+      );
+    };
+
+    // Render App Component
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
+
