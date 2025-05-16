@@ -15,6 +15,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #222;
             color: white;
+            margin: 0;
+            padding: 0;
         }
        .container {
             max-width: 960px;
@@ -35,7 +37,7 @@
         }
         .feature-card {
             border-radius: 16px;
-            overflow: ;
+            overflow: hidden;
             transition: transform 0.3s ease;
             cursor: pointer;
             margin-bottom: 13px;
@@ -67,40 +69,59 @@
             margin: 25px 0 15px 0;
         }
     .navbar {
-        background-color: rgba(42, 42, 42, 0.90);
-        border-radius: 20px;
+        background-color: rgba(42, 42, 42, 0.97);
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
         position: fixed;
-        bottom: 15px;
+        bottom: 0;
         left: 50%;
         transform: translateX(-50%);
-        width: 93%;
+        width: 100%;
         max-width: 600px;
-        padding: 0;
+        padding: 5px 0;
         z-index: 100;
-        box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
-        margin-bottom: 0 !important;
+        box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.35);
+        display: flex;
+        justify-content: space-around;
+        align-items: stretch;
       }
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 12px;
+            justify-content: center;
+            font-size: 13px;
+            color: #E0E0E0;
             cursor: pointer;
-            padding: 12px 0;
+            padding: 8px 5px;
             flex-grow: 1;
-           border-radius: 15px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            text-align: center;
+            border-radius: 10px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            min-height: 56px;
         }
          .nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #FFFFFF;
         }
         .nav-item.active {
             color: #FFD84D;
             font-weight: bold;
         }
+        .nav-item.active .nav-icon svg {
+            stroke: #FFD84D;
+        }
         .nav-icon {
-            margin-bottom: 5px;
-            font-size: 20px;
+            margin-bottom: 4px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-icon svg {
+            stroke: #E0E0E0;
+            transition: stroke 0.2s ease;
+            /* Ensure width/height are set on SVG elements directly if not here */
         }
         .header {
             display: flex;
@@ -119,6 +140,10 @@
             font-weight: bold;
             color: #222;
         }
+        /* User avatar SVG specific styling if needed for stroke */
+        .user-avatar svg path {
+            /* stroke: #fff; /* Ensured via inline SVG attributes now */
+        }
         .greeting {
             font-size: 18px;
             margin-bottom: 0;
@@ -129,8 +154,6 @@
         border-radius: 18px;
         padding: 20px;
         background-color: #2a2a2a;
-    }
-    .faq-section:hover{
     }
     .faq-item {
         margin-bottom: 15px;
@@ -182,13 +205,9 @@
            transform: translateY(0);
         }
      .content-wrapper {
-         opacity: 1;
-         transition: opacity 0.4s ease-out;
-        margin-bottom: 160px;
+        margin-bottom: 85px;
+        position: relative; /* Useful for GSAP animations on children */
      }
-     .content-wrapper.fade-out {
-          opacity: 0;
-    }
       .my-account-section {
          margin-top: 20px;
     }
@@ -198,11 +217,32 @@
     <div id="root"></div>
     <script type="text/babel">
         function App() {
-             const [currentPage, setCurrentPage] = React.useState('home');
-              const [isFading, setIsFading] = React.useState(false);
-             React.useEffect(() => {
-                  gsap.from(".feature-card", { duration: 0.8, y: 30, opacity: 0, stagger: 0.1, ease: "power3.out" });
-               },);
+            const [currentPage, setCurrentPage] = React.useState('home');
+            const initialLoadDone = React.useRef(false);
+
+            React.useEffect(() => {
+                if (currentPage === 'home' && !initialLoadDone.current) {
+                    gsap.from(".feature-card", { duration: 0.8, y: 30, opacity: 0, stagger: 0.1, ease: "power3.out", delay: 0.2 });
+                }
+            }, []);
+
+            React.useEffect(() => {
+                const pageContent = document.querySelector('.content-wrapper > div');
+
+                if (pageContent) {
+                    if (initialLoadDone.current) {
+                        gsap.fromTo(pageContent,
+                            { opacity: 0, y: 20 },
+                            { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', delay: 0.05 }
+                        );
+                    } else {
+                        gsap.set(pageContent, { opacity: 1, y: 0 });
+                        initialLoadDone.current = true;
+                    }
+                }
+            }, [currentPage]);
+
+
               const faqs = [
                 {
                     question: "شلون اعرف المنتج وصل للمستودع",
@@ -211,7 +251,7 @@
                 },
                 {
                     question: "شنو سبب عدم توفر تسجيل الكتروني",
-                    answer: "بسبب محدودية الخدمة، الخدمة لازم تكون محدودة حتى توفر افضل تجربة مستخدم ممكنة، حاليا ندعم فقط 60 عنوان ( 60 مستخدم ) في وقت واحد، في حال تواصلت ويانا ومامتوفر عناوين اضافية راح تحصل على عنوان مدفوع مجاناً لمدة شهر كامل لكن للأسف  غير قابل للتجديد التلقائي الا عن طريق الدفع للاشتراك السنوي.",
+                    answer: "بسبب محدودية الخدمة، حاليا ندعم فقط 60 عنوان ( 60 مستخدم ) في وقت واحد، في حال تواصلت ويانا ومامتوفر عناوين اضافية راح تحصل على عنوان مدفوع مجاناً لمدة شهر كامل لكن للأسف  غير قابل للتجديد التلقائي الا عن طريق الدفع للاشتراك السنوي.",
                     icon: 'bx bx-question-mark'
                 },
                 {
@@ -220,6 +260,7 @@
                     icon: 'bx bx-question-mark'
                 }
             ];
+
            const toggleAnswer = (index) => {
               const faqItem = document.getElementById(`faq-item-${index}`);
                 const answerElement = document.getElementById(`answer-${index}`);
@@ -264,13 +305,32 @@
                     }
                 }
             };
+
             const handlePageChange = (newPage) => {
-               setIsFading(true);
-              setTimeout(() => {
-                setCurrentPage(newPage);
-                setIsFading(false);
-            }, 400);
+                if (currentPage === newPage) return;
+
+                const pageContent = document.querySelector('.content-wrapper > div');
+                if (pageContent) {
+                    gsap.to(pageContent, {
+                        opacity: 0,
+                        y: -20,
+                        duration: 0.3,
+                        ease: 'power2.in',
+                        onComplete: () => {
+                            setCurrentPage(newPage);
+                        }
+                    });
+                } else {
+                    setCurrentPage(newPage);
+                }
             };
+
+            const handleNavKeyPress = (event, page) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    handlePageChange(page);
+                }
+            };
+
             function renderHomePage() {
                 return (
                     <div>
@@ -279,69 +339,43 @@
                                 <p className="greeting">اهلاً وسهلاً</p>
                             </div>
                             <div className="user-avatar">
-                                <span><svg width="40" height="40" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M96 167c15.462 0 30.535-4.647 43.103-13.288s22-20.842 26.97-34.89a68.27 68.27 0 0 0 .741-43.432c-4.489-14.196-13.499-26.687-25.766-35.718s-27.173-14.149-42.627-14.634c-15.453-.485-30.677 3.686-43.533 11.928S32.189 57.106 26.743 70.99s-6.223 29.057-2.221 43.386" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M96 52c-12.996 0-25.459 6.058-34.648 16.841S47 94.25 47 109.5s5.163 29.875 14.352 40.659S83.004 167 96 167m0-33c6.041 0 12.022-1.06 17.603-3.121s10.652-5.08 14.924-8.888c4.271-3.807 7.66-8.327 9.971-13.301S142 98.384 142 93s-1.19-10.716-3.502-15.69-5.7-9.494-9.971-13.301c-4.272-3.808-9.343-6.828-14.924-8.888C108.022 53.06 102.041 52 96 52" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M96 86c-3.02 0-6.011.62-8.802 1.827a23 23 0 0 0-7.461 5.202 24.1 24.1 0 0 0-4.986 7.787A24.9 24.9 0 0 0 73 110c0 3.152.595 6.273 1.75 9.184a24.1 24.1 0 0 0 4.987 7.787 23 23 0 0 0 7.461 5.202A22.2 22.2 0 0 0 96 134m13.856-27c1.405-2.128 2.144-4.542 2.144-7 0-2.457-.739-4.872-2.144-7-1.404-2.128-3.424-3.896-5.856-5.124-2.432-1.23-5.191-1.876-8-1.876" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</span>
+                                <span>
+                                    <svg width="40" height="40" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M96 167c15.462 0 30.535-4.647 43.103-13.288s22-20.842 26.97-34.89a68.27 68.27 0 0 0 .741-43.432c-4.489-14.196-13.499-26.687-25.766-35.718s-27.173-14.149-42.627-14.634c-15.453-.485-30.677 3.686-43.533 11.928S32.189 57.106 26.743 70.99s-6.223 29.057-2.221 43.386" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                                      <path d="M96 52c-12.996 0-25.459 6.058-34.648 16.841S47 94.25 47 109.5s5.163 29.875 14.352 40.659S83.004 167 96 167m0-33c6.041 0 12.022-1.06 17.603-3.121s10.652-5.08 14.924-8.888c4.271-3.807 7.66-8.327 9.971-13.301S142 98.384 142 93s-1.19-10.716-3.502-15.69-5.7-9.494-9.971-13.301c-4.272-3.808-9.343-6.828-14.924-8.888C108.022 53.06 102.041 52 96 52" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                                      <path d="M96 86c-3.02 0-6.011.62-8.802 1.827a23 23 0 0 0-7.461 5.202 24.1 24.1 0 0 0-4.986 7.787A24.9 24.9 0 0 0 73 110c0 3.152.595 6.273 1.75 9.184a24.1 24.1 0 0 0 4.987 7.787 23 23 0 0 0 7.461 5.202A22.2 22.2 0 0 0 96 134m13.856-27c1.405-2.128 2.144-4.542 2.144-7 0-2.457-.739-4.872-2.144-7-1.404-2.128-3.424-3.896-5.856-5.124-2.432-1.23-5.191-1.876-8-1.876" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
                             </div>
                         </div>
-                        <h2 className="section-title">خدمة عناوين الشحن متوقفة مؤقتاً</h2>
+                        <h2 className="section-title">مقارنة عناوين الشحن</h2>
                        <div className="providers-section">
-                        <div className="provider-pill">تكدر تستخدم خدمتنا الثانية مع العلم ان مميزاتنا ممكن تغنيك عن اي خدمة ممكن تخطر على بالك</div>
+                        <div className="provider-pill">وكيفية الحصول عليها من طرفنا</div>
                     </div>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="feature-card yellow p-3">
                                     <h5 className="mb-1 feature-title">العنوان المجاني</h5>
-                                     <p className="feature-text">
-                                    العنوان المجاني يكون باسمنا لكن برقم سويت خاص بيك
-                                    <br /><br />
-                                </p>
-                                 <p className="feature-text">
-                                  صالح لمدة 30 يوم فقط، بعد اول طلب تصبح المدة 60 يوم، ومع كل طلب تتجدد الصلاحية لكن لا تزيد
-                                 <br /><br />
-                                 </p>
-                                 <p className="feature-text">
-                                  تخزين مجاني لمدة 10 ايام فقط
-                              <br /><br />
-                                 </p>
-                                 <p className="feature-text">
-                                    دعم متواصل
-                                </p>
+                                     <p className="feature-text">العنوان المجاني يكون باسمنا لكن برقم سويت خاص بيك<br /><br /></p>
+                                     <p className="feature-text">صالح لمدة 30 يوم فقط، بعد اول طلب تصبح المدة 60 يوم، ومع كل طلب تتجدد الصلاحية لكن لا تزيد<br /><br /></p>
+                                     <p className="feature-text">تخزين مجاني لمدة 30 يوم فقط<br /><br /></p>
+                                     <p className="feature-text">دعم متواصل</p>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="feature-card purple p-3">
                                   <h5 className="mb-1 feature-title">العنوان المدفوع</h5>
-                                  <p className="feature-text">
-                                    العنوان باسمك الشخصي
-                                </p>
-                                 <p className="feature-text">
-                                    صالح طول فترة الاشتراك
-                                </p>
-                                  <p className="feature-text">
-                                     التوصيل اسرع بـ بضعة ايام
-                                 </p>
-                                 <p className="feature-text">
-                                     تخزين مجاني 60 يوم فقط
-                                 </p>
-                                   <p className="feature-text">
-                                     خصم 5% على اسعار الشحن
-                                 </p>
-                                 <p className="feature-text">
-                                     دعم متواصل
-                                 </p>
-                                  <p className="feature-text">
-                                     سعر الاشتراك  250,000 IQD / سنوياً
-                                 </p>
+                                  <p className="feature-text">العنوان باسمك الشخصي</p>
+                                  <p className="feature-text">صالح طول فترة الاشتراك</p>
+                                  <p className="feature-text">التوصيل اسرع بـ بضعة ايام</p>
+                                  <p className="feature-text">تخزين مجاني 60 يوم فقط</p>
+                                  <p className="feature-text">خصم 5% على اسعار الشحن</p>
+                                  <p className="feature-text">دعم متواصل</p>
+                                  <p className="feature-text">سعر الاشتراك  250,000 IQD / سنوياً</p>
                                 </div>
                             </div>
                         </div>
- <p className="feature-text">
-                                    يشتركون بـ: تجميع الطرود مجاناً، اعادة تغليف مجاناً، بدون ضرائب، كود مخصص لتتبع الشحنة، رسوم نضراً للوزن الحقيقي
-                                 </p>
+                         <p className="feature-text">يشتركون بـ: تجميع الطرود مجاناً، اعادة تغليف مجاناً، بدون ضرائب، كود مخصص لتتبع الشحنة، رسوم نضراً للوزن الحقيقي</p>
                         <h2 className="section-title">كيفية الحصول على عنوان مجاني</h2>
                         <div className="row">
                            <div className="col-md-6">
@@ -359,7 +393,7 @@
                         <div className="row">
                            <div className="col-md-6">
                             <div className="feature-card purple p-3">
-                                <h5 className="mb-1 feature-title">يمكنك مراسلتنا مباشرة مع العلم ان طريقة الدفع الوحيدة بنك العراق الاول - FIB</h5>
+                                <h5 className="mb-1 feature-title">يمكنك مراسلتنا مباشرة مع العلم ان طريقة الدفع الوحيدة بنك العراق الاول - FIB او عن طريق الحضور داخل المكتب</h5>
                             </div>
                         </div>
                         <div className="col-md-6">
@@ -392,49 +426,60 @@
                     <div className="my-account-section">
                       <h2 className="section-title">حسابي</h2>
                       <p>حاليا التسجيل الالكتروني غير متوفر.</p>
-                       <p>يمكنك مراسلتنا مباشرة للحصول على عنوان شحن.</p>
+                       <p>يمكنك مراسلتنا مباشرة للحصول على عنوان شحن من خلال <a href="https://wa.me/9647874905852">الضغط هنا</a>.</p>
                     </div>
                   );
                 }
             return (
                 <div className="container">
-                   <div className={`content-wrapper ${isFading ? 'fade-out' : ''}`}>
+                   <div className="content-wrapper">
                       {currentPage === 'home' && renderHomePage()}
                       {currentPage === 'faq' && renderFAQPage()}
                       {currentPage === 'account' && renderMyAccountPage()}
                     </div>
                    <nav className="navbar">
-                    <div className="container">
-                        <div className="row w-100">
-                              <div
-                                className={`col text-center nav-item ${currentPage === 'home' ? 'active' : ''}`}
-                                onClick={() => handlePageChange('home')}
-                               >
-                                <div className="nav-icon">
-                                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" stroke="#fff" stroke-width="12" viewBox="0 0 192 192"><path d="M166 157.04V92.332a12 12 0 0 0-3.558-8.529l-58-57.408c-4.676-4.628-12.207-4.628-16.884 0l-58 57.408A12 12 0 0 0 26 92.333v64.707a12 12 0 0 0 12 12h116a12 12 0 0 0 12-12z"/><path stroke-linejoin="round" d="M134 137.04v-34L96 65.77l-38 37.27v34z"/></svg>
-                                </div>
-                                <span>الرئيسية</span>
+                        <div
+                            className={`nav-item ${currentPage === 'home' ? 'active' : ''}`}
+                            onClick={() => handlePageChange('home')}
+                            onKeyPress={(e) => handleNavKeyPress(e, 'home')}
+                            role="button"
+                            tabIndex="0"
+                            aria-label="الرئيسية"
+                            aria-current={currentPage === 'home' ? 'page' : undefined}
+                           >
+                            <div className="nav-icon">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" stroke-width="12" viewBox="0 0 192 192"><path d="M166 157.04V92.332a12 12 0 0 0-3.558-8.529l-58-57.408c-4.676-4.628-12.207-4.628-16.884 0l-58 57.408A12 12 0 0 0 26 92.333v64.707a12 12 0 0 0 12 12h116a12 12 0 0 0 12-12z"/><path stroke-linejoin="round" d="M134 137.04v-34L96 65.77l-38 37.27v34z"/></svg>
                             </div>
-                             <div
-                                className={`col text-center nav-item ${currentPage === 'faq' ? 'active' : ''}`}
-                                onClick={() => handlePageChange('faq')}
-                             >
-                                <div className="nav-icon">
-                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="12" viewBox="0 0 192 192"><path d="M59 96c0 20.435 16.566 37 37 37s37-16.565 37-37-16.565-37-37-37-37 16.566-37 37z"/><path d="M96 170c40.869 0 74-33.131 74-74s-33.131-74-74-74-74 33.13-74 74c0 22.471 10.016 42.602 25.826 56.174L30 170z"/></svg>
-                                </div>
-                                <span>الأسئلة الشائعة</span>
-                            </div>
-                               <div
-                                className={`col text-center nav-item ${currentPage === 'account' ? 'active' : ''}`}
-                                onClick={() => handlePageChange('account')}
-                               >
-                                <div className="nav-icon">
-                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" viewBox="0 0 192 192"><path d="M170 110a15.001 15.001 0 1 1-30 0"/><path d="M140 110a15.001 15.001 0 1 1-30 0"/><path d="M73.213 72.787A30 30 0 1 0 82 94c0-7 0-7 10-7h72a6 6 0 0 1 6 6v17"/></svg>
-                                </div>
-                                <span>حسابي</span>
-                            </div>
+                            <span>الرئيسية</span>
                         </div>
-                    </div>
+                         <div
+                            className={`nav-item ${currentPage === 'faq' ? 'active' : ''}`}
+                            onClick={() => handlePageChange('faq')}
+                            onKeyPress={(e) => handleNavKeyPress(e, 'faq')}
+                            role="button"
+                            tabIndex="0"
+                            aria-label="الأسئلة الشائعة"
+                            aria-current={currentPage === 'faq' ? 'page' : undefined}
+                         >
+                            <div className="nav-icon">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke-linejoin="round" stroke-width="12" viewBox="0 0 192 192"><path d="M59 96c0 20.435 16.566 37 37 37s37-16.565 37-37-16.565-37-37-37-37 16.566-37 37z"/><path d="M96 170c40.869 0 74-33.131 74-74s-33.131-74-74-74-74 33.13-74 74c0 22.471 10.016 42.602 25.826 56.174L30 170z"/></svg>
+                            </div>
+                            <span>الأسئلة الشائعة</span>
+                        </div>
+                           <div
+                            className={`nav-item ${currentPage === 'account' ? 'active' : ''}`}
+                            onClick={() => handlePageChange('account')}
+                            onKeyPress={(e) => handleNavKeyPress(e, 'account')}
+                            role="button"
+                            tabIndex="0"
+                            aria-label="حسابي"
+                            aria-current={currentPage === 'account' ? 'page' : undefined}
+                           >
+                            <div className="nav-icon">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" viewBox="0 0 192 192"><path d="M170 110a15.001 15.001 0 1 1-30 0"/><path d="M140 110a15.001 15.001 0 1 1-30 0"/><path d="M73.213 72.787A30 30 0 1 0 82 94c0-7 0-7 10-7h72a6 6 0 0 1 6 6v17"/></svg>
+                            </div>
+                            <span>حسابي</span>
+                        </div>
                 </nav>
                 </div>
             );
