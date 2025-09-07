@@ -2,7 +2,7 @@
 const CACHE_NAME = 'uptime-pwa-cache-v1';
 const URLS_TO_CACHE = [
   '/',
-  'index.html',
+  'SubmitOrder.html',
   'manifest.json',
   'https://cdn.tailwindcss.com',
   'https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap',
