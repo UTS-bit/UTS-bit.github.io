@@ -1,7 +1,7 @@
 // Define the cache name and the files to be cached.
 const CACHE_NAME = 'uptime-pwa-cache-v1';
 const URLS_TO_CACHE = [
-  '/',
+  '/SubmitOrder.html',
   'SubmitOrder.html',
   'manifest.json',
   'https://cdn.tailwindcss.com',
