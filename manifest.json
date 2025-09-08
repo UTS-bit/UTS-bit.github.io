@@ -2,7 +2,7 @@
   "name": "UpTime | Our Way",
   "short_name": "UpTime",
   "description": "Global Shopping at Your Fingertips. Order any product from anywhere in the world, and we'll handle the rest.",
-  "start_url": "https://uts-bit.github.io/SubmitOrder.html",
+  "start_url": "/UTS-bit.github.io/SubmitOrder.html",
   "display": "standalone",
   "background_color": "#FAFAFA",
   "theme_color": "#3182CE",
