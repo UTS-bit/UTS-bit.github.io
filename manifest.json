@@ -1,5 +1,5 @@
 {
-  "name": "UpTime | Our Way",
+  "name": "UpTime | Our Style",
   "short_name": "UpTime",
   "description": "Global Shopping at Your Fingertips. Order any product from anywhere in the world, and we'll handle the rest.",
   "start_url": "/SubmitOrder.html",
@@ -9,19 +9,19 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://i.ibb.co/SXtFsHVY/1000160705.jpg",
+      "src": "https://i.ibb.co/sdDtNQd8/1000161842.jpg",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://i.ibb.co/SXtFsHVY/1000160705.jpg",
+      "src": "https://i.ibb.co/sdDtNQd8/1000161842.jpg",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://i.ibb.co/SXtFsHVY/1000160705.jpg",
+      "src": "https://i.ibb.co/sdDtNQd8/1000161842.jpg",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
