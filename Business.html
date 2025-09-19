@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soon</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: grid;
+            place-content: center;
+            min-height: 100vh;
+            background-color: #121212;
+            color: #f0f0f0;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            text-align: center;
+            perspective: 1000px;
+            transform-style: preserve-d;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+            visibility: hidden;
+        }
+        
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            visibility: hidden;
+        }
+        
+        .explanation {
+            font-size: 1.3rem;
+            font-weight: 300;
+            line-height: 1.7;
+            max-width: 40ch;
+            color: #999;
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .background-shapes span {
+            position: absolute;
+            bottom: -100px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: floatUp 25s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-shapes"></div>
+
+    <div class="container">
+        <svg class="logo" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M96 167c15.462 0 30.535-4.647 43.103-13.288 12.568-8.641 22-20.842 26.97-34.89a68.267 68.267 0 0 0 .741-43.432c-4.489-14.196-13.499-26.687-25.766-35.718-12.266-9.031-27.173-14.149-42.627-14.634-15.453-.485-30.677 3.686-43.533 11.928-12.856 8.242-22.699 20.14-28.145 34.024-5.446 13.884-6.223 29.057-2.221 43.386" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M96 52c-12.996 0-25.459 6.058-34.648 16.841C52.162 79.625 47 94.25 47 109.5s5.163 29.875 14.352 40.659C70.54 160.942 83.004 167 96 167m0-33c6.041 0 12.022-1.06 17.603-3.121 5.581-2.06 10.652-5.08 14.924-8.888 4.271-3.807 7.66-8.327 9.971-13.301C140.81 103.716 142 98.384 142 93s-1.19-10.716-3.502-15.69c-2.311-4.974-5.7-9.494-9.971-13.301-4.272-3.808-9.343-6.828-14.924-8.888C108.022 53.06 102.041 52 96 52" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M96 86c-3.02 0-6.011.62-8.802 1.827a22.962 22.962 0 0 0-7.461 5.202 24.093 24.093 0 0 0-4.986 7.787A24.902 24.902 0 0 0 73 110c0 3.152.595 6.273 1.75 9.184a24.1 24.1 0 0 0 4.987 7.787 22.968 22.968 0 0 0 7.461 5.202A22.173 22.173 0 0 0 96 134m13.856-27c1.405-2.128 2.144-4.542 2.144-7 0-2.457-.739-4.872-2.144-7-1.404-2.128-3.424-3.896-5.856-5.124-2.432-1.23-5.191-1.876-8-1.876" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <h1 class="title">Soon</h1>
+        <p class="explanation">We're still working on this feature.</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const bgContainer = document.querySelector('.background-shapes');
+            for (let i = 0; i < 20; i++) {
+                const shape = document.createElement('span');
+                const size = Math.random() * 60 + 20;
+                shape.style.width = `${size}px`;
+                shape.style.height = `${size}px`;
+                shape.style.left = `${Math.random() * 100}%`;
+                const duration = Math.random() * 15 + 20;
+                const delay = Math.random() * 10;
+                shape.style.animationDuration = `${duration}s`;
+                shape.style.animationDelay = `${delay}s`;
+                bgContainer.appendChild(shape);
+            }
+
+            const paths = document.querySelectorAll('.logo path');
+            const logo = document.querySelector('.logo');
+            const title = document.querySelector('.title');
+            const explanation = document.querySelector('.explanation');
+
+            gsap.set([logo, title], { autoAlpha: 1 });
+
+            paths.forEach(path => {
+                const length = path.getTotalLength();
+                gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+            });
+            
+            const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+
+            tl
+                .to(paths, { strokeDashoffset: 0, duration: 2 })
+                .fromTo(title, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1 }, "-=1.5")
+                .to(logo, { scale: 1.05, duration: 3, repeat: -1, yoyo: true, ease: "sine.inOut" });
+
+            let isExplanationVisible = false;
+            let isAnimating = false;
+
+            logo.addEventListener('click', () => {
+                if (isAnimating) return;
+                
+                isAnimating = true;
+                isExplanationVisible = !isExplanationVisible;
+
+                gsap.killTweensOf(logo, "scale");
+
+                const clickTl = gsap.timeline({
+                    onComplete: () => {
+                        isAnimating = false;
+                        gsap.to(logo, { scale: 1.05, duration: 3, repeat: -1, yoyo: true, ease: "sine.inOut" });
+                    }
+                });
+
+                clickTl
+                    .to(logo, { 
+                        rotationY: '+=180', 
+                        scale: 0.85, 
+                        duration: 0.6, 
+                        ease: "back.inOut(1.7)" 
+                    })
+                    .to(title, { autoAlpha: isExplanationVisible ? 0 : 1 }, "<")
+                    .to(explanation, { autoAlpha: isExplanationVisible ? 1 : 0 }, "<0.3")
+                    .to(logo, { 
+                        rotationY: '+=180', 
+                        scale: 1, 
+                        duration: 0.6, 
+                        ease: "back.inOut(1.7)" 
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
